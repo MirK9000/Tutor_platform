@@ -13,12 +13,15 @@ import { TaskAttachment } from '../../domain/models/task-attachment.model'; // �
  * будут частью этого объекта.
  */
 export type CreateTaskData = Omit<Task, 'id' | 'calculateMaxPoints' | 'addAttachment' | 'removeAttachment' | 'updateDetails' | 'attachments'> & {
-    maxPointsOverride?: number | null; // Убедимся, что это поле есть, если оно часть Task и не в Omit
+    // maxPointsOverride?: number | null; // Оставляем это, если хотим иметь возможность задать его при создании
+                                        // Если нет, то оно должно быть унаследовано из Omit<Task,...>
+                                        // Если maxPointsOverride есть в Task и не в Omit, то Omit<Task,...> его вернет.
+                                        // Давайте уберем явное добавление здесь, чтобы тип выводился чисто из Task
 };
 
-export type UpdateTaskData = Partial<Omit<Task, 'id' | 'calculateMaxPoints' | 'addAttachment' | 'removeAttachment' | 'updateDetails' | 'attachments'>> & {
-     maxPointsOverride?: number | null; // Убедимся, что это поле есть, если оно часть Task и не в Omit
-};
+// Упрощенный UpdateTaskData для диагностики
+export type UpdateTaskData = Partial<Omit<Task, 'id' | 'calculateMaxPoints' | 'addAttachment' | 'removeAttachment' | 'updateDetails' | 'attachments'>>;
+
 
 
 export interface ITaskRepository {
